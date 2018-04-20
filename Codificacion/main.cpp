@@ -40,42 +40,12 @@ int mod_inverso(int a,int b){
 int escribiendo(int code[]){
     ofstream escritura;
     string elemento;
-    escritura.open("cipher.txt",ios::out);
+    escritura.open("encriptado.txt",ios::out);
     for(int i=0;i<tamano;i++){
             elemento=code[i];
         escritura<<elemento;
     }
-    if(escritura.is_open()){
-        cout<<"Abierto OK"<<endl;
-    }else{
-        cout<<"No se pudo abrir el archivo"<<endl;
-    }
     escritura.close();
-}
-
-void descifrado(){
-    int publica;
-    cout<<"Ingrese la clave pública"<<endl;
-    cin>>publica;
-	ifstream lectura;
-	lectura.open("cipher.txt",ios::out|ios::in);
-	if(lectura.is_open()){
-        char i;
-		cout<<"Abierto OK lectura"<<endl;
-		cout<<"El mensaje es: "<<endl;
-
-        ofstream escritura;
-        escritura.open("plain2.txt",ios::out);
-        lectura>>i;
-		while(!lectura.eof()){
-            char k=char(modulo(int(i)*publica,256));
-            escritura<<k;
-            lectura>>i;
-		}
-		escritura.close();
-	}else{
-		cout<<"El archivo no se pudo leer"<<endl;
-	}
 }
 
 int cifrado(){
@@ -83,7 +53,7 @@ int cifrado(){
     cin>>clave;
     if(mod_inverso(clave,256)==0){cout<<"Esa clave no es permitida, elija otra"<<endl; return 0;}
     ifstream lectura;
-	lectura.open("plain1.txt",ios::out|ios::in);
+	lectura.open("texto1.txt",ios::out|ios::in);
 	if(lectura.is_open()){
 	    char i;
         i=lectura.get();
@@ -94,14 +64,13 @@ int cifrado(){
             if(temp==1){
                 mensaje=mensaje+i;
                 i=lectura.get();
-                cout<<i<<endl;
             }else{
                 temp=1;
                 i=lectura.get();
-                cout<<i<<endl;}
+            }
 		}
-		cout<<"Encuentre el mensaje descifrado en plain2.txt "<<endl;
 		cout<<mensaje<<endl;
+		cout<<"El mensaje encriptado:    ";
 	}else{
 		cout<<"El archivo no se pudo leer"<<endl;
 	}
@@ -111,8 +80,34 @@ int cifrado(){
         code[i]=modulo((int(mensaje[i])*clave),256);
         cout<<char(code[i]);
     }
+
     cout<<endl;
     escribiendo(code);
+}
+
+void descifrado(){
+    int publica;
+    cout<<"Ingrese la clave pública"<<endl;
+    cin>>publica;
+	ifstream lectura;
+	lectura.open("encriptado.txt",ios::out|ios::in);
+	if(lectura.is_open()){
+        char i;
+		//cout<<"Abierto OK lectura"<<endl;
+		cout<<"Encuentre el mensaje desencriptado en texto2.txt"<<endl;
+
+        ofstream escritura;
+        escritura.open("texto2.txt",ios::out);
+        lectura>>i;
+		while(!lectura.eof()){
+            char k=char(modulo(int(i)*publica,256));
+            escritura<<k;
+            lectura>>i;
+		}
+		escritura.close();
+	}else{
+		cout<<"El archivo no se pudo leer"<<endl;
+	}
 }
 
 int main(){

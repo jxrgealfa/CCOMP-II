@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1524218065 source:c:\users\jorge alfaro\documents\github\ccomp-ii\codificacion\main.cpp
+	<iostream>
+	<fstream>
+	<string.h>
+
